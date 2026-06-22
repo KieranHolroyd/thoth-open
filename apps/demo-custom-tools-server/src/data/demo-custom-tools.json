@@ -1,0 +1,363 @@
+{
+  "schemaVersion": 1,
+  "exportedAt": "2026-06-21T00:00:00.000Z",
+  "tools": [
+    {
+      "name": "search_menu",
+      "description": "Search the pizzeria menu by item name, category, or item ID. Use when the user asks about prices, ingredients, specials, or what is available to order.",
+      "webhookUrl": "https://demo.thothsupport.dev/",
+      "enabled": false,
+      "parametersSchema": {
+        "parameters": [
+          {
+            "name": "query",
+            "type": "string",
+            "description": "Free-text search against menu item titles and descriptions",
+            "required": false
+          },
+          {
+            "name": "category",
+            "type": "string",
+            "description": "Menu category ID: 0=Specials, 1=Pizzas, 2=Pasta, 3=Sides, 4=Dips, 5=Desserts",
+            "required": false,
+            "enum": ["0", "1", "2", "3", "4", "5"]
+          },
+          {
+            "name": "itemId",
+            "type": "number",
+            "description": "Look up a single menu item by numeric ID",
+            "required": false
+          }
+        ]
+      },
+      "contextPolicy": {
+        "includeDiscordUserId": true,
+        "includeTicketId": true,
+        "includeChannelId": false,
+        "includeTicketSubject": false,
+        "includeTicketTags": false
+      },
+      "outboundHeaders": [],
+      "usageHint": "Call when the user asks about menu items, prices, ingredients, or what the restaurant serves.",
+      "exampleResponse": {
+        "menu": [
+          {
+            "id": 1,
+            "title": "Margherita",
+            "description": "Classic tomato and mozzarella on a hand-stretched thin and crispy base.",
+            "catagory": "1",
+            "price_medium": 7,
+            "price_large": 9,
+            "sizable": true
+          }
+        ],
+        "meta": {
+          "totalItems": 14,
+          "matchedItems": 1
+        }
+      },
+      "testFixtures": [
+        {
+          "name": "Search margherita",
+          "arguments": {
+            "query": "margherita"
+          }
+        },
+        {
+          "name": "All pizzas",
+          "arguments": {
+            "category": "1"
+          }
+        }
+      ],
+      "callLogSamplingRate": 100
+    },
+    {
+      "name": "check_order_status",
+      "description": "Look up the current status of a customer order by order ID. Use when the user asks about shipping, delivery, collection, or order progress.",
+      "webhookUrl": "https://demo.thothsupport.dev/",
+      "enabled": false,
+      "parametersSchema": {
+        "parameters": [
+          {
+            "name": "orderId",
+            "type": "string",
+            "description": "The order ID or reference number to look up (e.g. ORD-42)",
+            "required": true
+          }
+        ]
+      },
+      "contextPolicy": {
+        "includeDiscordUserId": true,
+        "includeTicketId": true,
+        "includeChannelId": false,
+        "includeTicketSubject": false,
+        "includeTicketTags": false
+      },
+      "outboundHeaders": [],
+      "usageHint": "Call when the user asks about order status, shipping, delivery, tracking, or whether their order is ready.",
+      "exampleResponse": {
+        "found": true,
+        "orderId": "ORD-42",
+        "status": "shipped",
+        "carrier": "UPS",
+        "trackingNumber": "1Z999AA10123456784",
+        "eta": "2026-06-24"
+      },
+      "testFixtures": [
+        {
+          "name": "Shipped order",
+          "arguments": {
+            "orderId": "ORD-42"
+          }
+        },
+        {
+          "name": "Preparing order",
+          "arguments": {
+            "orderId": "ORD-100"
+          }
+        }
+      ],
+      "callLogSamplingRate": 100
+    },
+    {
+      "name": "check_subscription",
+      "description": "Look up subscription status and billing details for a customer by email address. Use when the user asks about renewals, cancellations, trials, or plan access.",
+      "webhookUrl": "https://demo.thothsupport.dev/",
+      "enabled": false,
+      "parametersSchema": {
+        "parameters": [
+          {
+            "name": "email",
+            "type": "string",
+            "description": "The email address associated with the subscription",
+            "required": true
+          }
+        ]
+      },
+      "contextPolicy": {
+        "includeDiscordUserId": true,
+        "includeTicketId": true,
+        "includeChannelId": false,
+        "includeTicketSubject": false,
+        "includeTicketTags": false
+      },
+      "outboundHeaders": [],
+      "usageHint": "Call when the user asks about their subscription, billing, renewal, trial, or plan tier.",
+      "exampleResponse": {
+        "found": true,
+        "email": "demo@example.com",
+        "plan": "pro",
+        "status": "active",
+        "renewsAt": "2026-07-01",
+        "seats": 2
+      },
+      "testFixtures": [
+        {
+          "name": "Active pro subscription",
+          "arguments": {
+            "email": "demo@example.com"
+          }
+        },
+        {
+          "name": "Trialing subscription",
+          "arguments": {
+            "email": "trial@example.com"
+          }
+        }
+      ],
+      "callLogSamplingRate": 100
+    },
+    {
+      "name": "validate_license",
+      "description": "Verify whether a license key is valid and return activation or expiry details. Use when the user provides a license or product key.",
+      "webhookUrl": "https://demo.thothsupport.dev/",
+      "enabled": false,
+      "parametersSchema": {
+        "parameters": [
+          {
+            "name": "licenseKey",
+            "type": "string",
+            "description": "The license or product key to validate",
+            "required": true
+          }
+        ]
+      },
+      "contextPolicy": {
+        "includeDiscordUserId": true,
+        "includeTicketId": true,
+        "includeChannelId": false,
+        "includeTicketSubject": false,
+        "includeTicketTags": false
+      },
+      "outboundHeaders": [],
+      "usageHint": "Call when the user provides a license key or asks whether a key is valid or expired.",
+      "exampleResponse": {
+        "found": true,
+        "licenseKey": "THOTH-DEMO-2026",
+        "valid": true,
+        "product": "Thoth Pro",
+        "expiresAt": "2027-01-01",
+        "seats": 5,
+        "activatedDevices": 2
+      },
+      "testFixtures": [
+        {
+          "name": "Valid license",
+          "arguments": {
+            "licenseKey": "THOTH-DEMO-2026"
+          }
+        },
+        {
+          "name": "Expired license",
+          "arguments": {
+            "licenseKey": "THOTH-EXPIRED"
+          }
+        }
+      ],
+      "callLogSamplingRate": 100
+    },
+    {
+      "name": "account_status",
+      "description": "Look up account standing, suspension state, or access level by username. Use when the user asks whether their account is active, banned, or restricted.",
+      "webhookUrl": "https://demo.thothsupport.dev/",
+      "enabled": false,
+      "parametersSchema": {
+        "parameters": [
+          {
+            "name": "username",
+            "type": "string",
+            "description": "The account username to look up",
+            "required": true
+          }
+        ]
+      },
+      "contextPolicy": {
+        "includeDiscordUserId": true,
+        "includeTicketId": true,
+        "includeChannelId": false,
+        "includeTicketSubject": false,
+        "includeTicketTags": false
+      },
+      "outboundHeaders": [],
+      "usageHint": "Call when the user asks if their account is active, banned, suspended, or restricted.",
+      "exampleResponse": {
+        "found": true,
+        "username": "player123",
+        "status": "active",
+        "memberSince": "2024-03-15",
+        "restrictions": []
+      },
+      "testFixtures": [
+        {
+          "name": "Active account",
+          "arguments": {
+            "username": "player123"
+          }
+        },
+        {
+          "name": "Banned account",
+          "arguments": {
+            "username": "banned_user"
+          }
+        }
+      ],
+      "callLogSamplingRate": 100
+    },
+    {
+      "name": "get_store_info",
+      "description": "Return store hours, delivery zones, contact details, and current promotions. Use when the user asks when the restaurant is open, where it delivers, or about deals.",
+      "webhookUrl": "https://demo.thothsupport.dev/",
+      "enabled": false,
+      "parametersSchema": {
+        "parameters": []
+      },
+      "contextPolicy": {
+        "includeDiscordUserId": true,
+        "includeTicketId": true,
+        "includeChannelId": false,
+        "includeTicketSubject": false,
+        "includeTicketTags": false
+      },
+      "outboundHeaders": [],
+      "usageHint": "Call when the user asks about opening hours, delivery areas, phone number, address, or promotions.",
+      "exampleResponse": {
+        "store": {
+          "name": "Thoth Demo Pizzeria",
+          "phone": "01292 310297",
+          "address": "42 High Street, Ayr, KA7 1LU",
+          "collectionTimeMinutes": 20
+        },
+        "promotions": [
+          {
+            "title": "Two-for-one Tuesdays",
+            "code": "TUESDAY2FOR1"
+          }
+        ]
+      },
+      "testFixtures": [
+        {
+          "name": "Store info",
+          "arguments": {}
+        }
+      ],
+      "callLogSamplingRate": 100
+    },
+    {
+      "name": "cancel_order",
+      "kind": "action",
+      "description": "Cancel a customer order by order ID. Use when the user explicitly asks to cancel an order that has not been delivered yet.",
+      "webhookUrl": "https://demo.thothsupport.dev/",
+      "enabled": false,
+      "parametersSchema": {
+        "parameters": [
+          {
+            "name": "orderId",
+            "type": "string",
+            "description": "The order ID to cancel (e.g. ORD-100)",
+            "required": true
+          },
+          {
+            "name": "reason",
+            "type": "string",
+            "description": "Optional cancellation reason to store on the order",
+            "required": false
+          }
+        ]
+      },
+      "contextPolicy": {
+        "includeDiscordUserId": true,
+        "includeTicketId": true,
+        "includeChannelId": false,
+        "includeTicketSubject": false,
+        "includeTicketTags": false
+      },
+      "outboundHeaders": [],
+      "usageHint": "Call only when the user clearly wants to cancel a specific order. Requires staff approval before the webhook runs.",
+      "exampleResponse": {
+        "ok": true,
+        "found": true,
+        "orderId": "ORD-100",
+        "status": "cancelled",
+        "cancelReason": "Customer changed plans",
+        "message": "Order ORD-100 has been cancelled."
+      },
+      "testFixtures": [
+        {
+          "name": "Cancel preparing order",
+          "arguments": {
+            "orderId": "ORD-100",
+            "reason": "Customer changed plans"
+          }
+        },
+        {
+          "name": "Already delivered",
+          "arguments": {
+            "orderId": "ORD-15"
+          }
+        }
+      ],
+      "callLogSamplingRate": 100
+    }
+  ]
+}

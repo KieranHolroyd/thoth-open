@@ -1,0 +1,56 @@
+name: Publish @thothsupport/webhook
+
+on:
+  push:
+    tags:
+      - 'webhook-v*'
+
+permissions:
+  id-token: write
+  contents: read
+
+concurrency:
+  group: publish-webhook
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    name: Publish to npm
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10.15.0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Verify tag matches package version
+        working-directory: packages/webhook
+        run: |
+          TAG_VERSION="${GITHUB_REF_NAME#webhook-v}"
+          PKG_VERSION=$(node -p "JSON.parse(require('fs').readFileSync('package.json','utf8')).version")
+          if [ "$TAG_VERSION" != "$PKG_VERSION" ]; then
+            echo "Tag webhook-v${TAG_VERSION} does not match package.json version ${PKG_VERSION}"
+            exit 1
+          fi
+
+      - name: Test
+        run: pnpm webhook:test
+
+      - name: Build
+        run: pnpm webhook:build
+
+      - name: Publish to npm (trusted publishing)
+        working-directory: packages/webhook
+        run: npm publish --provenance --access public

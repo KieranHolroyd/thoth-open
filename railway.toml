@@ -1,0 +1,11 @@
+[build]
+builder = "RAILPACK"
+buildCommand = "pnpm demo:build"
+watchPatterns = ["apps/demo-custom-tools-server/**", "packages/webhook/**"]
+
+[deploy]
+startCommand = "pnpm demo:start"
+healthcheckPath = "/health"
+healthcheckTimeout = 60
+restartPolicyType = "ON_FAILURE"
+restartPolicyMaxRetries = 10

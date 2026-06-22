@@ -1,0 +1,43 @@
+{
+  "name": "@thothsupport/webhook",
+  "version": "0.1.0",
+  "description": "Verify signed webhook requests from Thoth custom tools",
+  "type": "module",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/KieranHolroyd/thoth-open.git",
+    "directory": "packages/webhook"
+  },
+  "bugs": {
+    "url": "https://github.com/KieranHolroyd/thoth-open/issues"
+  },
+  "homepage": "https://github.com/KieranHolroyd/thoth-open/tree/main/packages/webhook#readme",
+  "engines": {
+    "node": ">=20"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "test": "node --import tsx --test test/verify.test.ts",
+    "prepublishOnly": "pnpm run build"
+  },
+  "devDependencies": {
+    "@types/node": "^22.15.0",
+    "tsx": "^4.19.0",
+    "typescript": "catalog:"
+  }
+}

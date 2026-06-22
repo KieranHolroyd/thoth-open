@@ -1,0 +1,26 @@
+{
+  "name": "@thothsupport/demo-custom-tools-server",
+  "description": "Mock API with pizza menu, orders, subscriptions, licenses, and account data for Thoth custom tool demos",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@10.15.0",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "dev": "tsx watch src/index.ts"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "@hono/node-server": "^2.0.5",
+    "@thothsupport/webhook": "workspace:*",
+    "dotenv": "^16.5.0",
+    "hono": "^4.12.25"
+  },
+  "devDependencies": {
+    "@types/node": "^22.15.0",
+    "tsx": "^4.19.0",
+    "typescript": "7.0.1-rc"
+  }
+}
