@@ -2,6 +2,8 @@
 
 Open-source SDK and reference implementations for [Thoth](https://thothsupport.dev) [custom tools](https://thothsupport.dev/docs/dashboard/custom-tools.html).
 
+**Repository:** [github.com/KieranHolroyd/thoth-open](https://github.com/KieranHolroyd/thoth-open)
+
 | Package | npm | Description |
 | --- | --- | --- |
 | `@thothsupport/webhook` | [npm](https://www.npmjs.com/package/@thothsupport/webhook) | Verify signed webhook requests from Thoth |

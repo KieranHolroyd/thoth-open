@@ -2,6 +2,8 @@
 
 Verify signed webhook requests from [Thoth](https://thothsupport.dev) custom tools.
 
+Source: [thoth-open](https://github.com/KieranHolroyd/thoth-open) (`packages/webhook`)
+
 ## Install
 
 ```bash
