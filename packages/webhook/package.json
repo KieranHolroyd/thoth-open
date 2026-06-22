@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "description": "Verify signed webhook requests from Thoth custom tools",
   "type": "module",
-  "license": "ISC",
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/KieranHolroyd/thoth-open.git",

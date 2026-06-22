@@ -63,7 +63,7 @@ See [`examples/node-express.ts`](./examples/node-express.ts) for a minimal Expre
 
 ## License
 
-ISC
+MIT
 
 ## Publishing (maintainers)
 

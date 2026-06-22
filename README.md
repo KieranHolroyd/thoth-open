@@ -50,4 +50,4 @@ See [`packages/webhook/README.md`](packages/webhook/README.md#publishing-maintai
 
 ## License
 
-ISC — see [LICENSE](LICENSE).
+MIT — see [LICENSE](LICENSE).
