@@ -22,10 +22,23 @@ pnpm dev
 
 ## Deploy on Railway
 
+Use **one** of these setups:
+
+### Option A — app directory (recommended for existing projects)
+
 | Setting | Value |
 | --- | --- |
-| **Config file path** | `railway.toml` (repository root) |
-| **Root Directory** | `.` (repository root) |
+| **Root Directory** | `apps/demo-custom-tools-server` |
+| **Config file path** | `apps/demo-custom-tools-server/railway.toml` |
+
+The demo app depends on `@thothsupport/webhook` from npm, so it does not need the monorepo workspace at deploy time.
+
+### Option B — repository root
+
+| Setting | Value |
+| --- | --- |
+| **Root Directory** | `.` |
+| **Config file path** | `railway.toml` |
 
 Set `THOTH_SIGNING_SECRET` in the service environment. Railway health-checks `GET /health`.
 
