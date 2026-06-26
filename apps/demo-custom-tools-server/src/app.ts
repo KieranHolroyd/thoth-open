@@ -24,11 +24,14 @@ app.get('/health', (c) =>
 	})
 );
 
-	app.get('/demo', (c) =>
+app.get('/FINI50', (c) => c.text('FINI50'));
+
+app.get('/demo', (c) =>
 		c.json({
 			description: 'Mock data API for Thoth custom tool demos.',
 			tools: listDemoTools(),
 			endpoints: [
+				'GET /FINI50',
 				'GET /menu',
 				'GET /menu/:id',
 				'GET /categories',
