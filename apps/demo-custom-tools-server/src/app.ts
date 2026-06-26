@@ -34,7 +34,7 @@ app.get("/health", (c) =>
   }),
 );
 
-app.get("/FINI50", (c) =>
+app.POST("/FINI50", (c) =>
   c.text(
     "The discount code is FINI50 for 50% off for 3 months, for the first 25 users only.",
   ),
