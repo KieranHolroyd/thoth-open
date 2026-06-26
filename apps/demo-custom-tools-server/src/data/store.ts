@@ -45,6 +45,15 @@ export const STORE_INFO: StoreInfo = {
 	paymentMethods: ['card', 'cash', 'apple_pay', 'google_pay']
 };
 
+export const FINI50_PROMO = {
+	code: 'FINI50',
+	discountPercent: 50,
+	durationMonths: 3,
+	limitUsers: 25,
+	message:
+		'The discount code is FINI50 for 50% off for 3 months, for the first 25 users only.'
+} as const;
+
 export const PROMOTIONS = [
 	{
 		id: 'tuesday-two-for-one',

@@ -2,7 +2,7 @@ import { findAccount } from '../data/accounts.js';
 import { findLicense } from '../data/licenses.js';
 import { buildMenuResponse, filterMenuItems, MENU_ITEMS } from '../data/menu.js';
 import { cancelOrder, createOrder, findOrder } from '../data/orders.js';
-import { PROMOTIONS, STORE_INFO } from '../data/store.js';
+import { FINI50_PROMO, PROMOTIONS, STORE_INFO } from '../data/store.js';
 import { findSubscription } from '../data/subscriptions.js';
 import type { ThothWebhookPayload } from '@thothsupport/webhook';
 
@@ -123,6 +123,10 @@ function handleStoreInfo() {
 	};
 }
 
+function handleFini50Promo() {
+	return { ...FINI50_PROMO };
+}
+
 function handleCancelOrder(args: Record<string, unknown>) {
 	const orderId = readStringArg(args, 'orderId');
 	if (!orderId) {
@@ -158,7 +162,9 @@ const TOOL_HANDLERS: Record<string, (args: Record<string, unknown>) => unknown> 
 	validate_license: handleLicense,
 	account_status: handleAccountStatus,
 	get_store_info: () => handleStoreInfo(),
-	store_hours: () => handleStoreInfo()
+	store_hours: () => handleStoreInfo(),
+	get_fini50_promo: () => handleFini50Promo(),
+	fini50: () => handleFini50Promo()
 };
 
 export function handleToolRequest(payload: ThothWebhookPayload) {
@@ -199,6 +205,9 @@ function getDemoArgs(toolName: string) {
 			return { username: 'player123' };
 		case 'get_store_info':
 		case 'store_hours':
+			return {};
+		case 'get_fini50_promo':
+		case 'fini50':
 			return {};
 		default:
 			return { query: 'margherita' };

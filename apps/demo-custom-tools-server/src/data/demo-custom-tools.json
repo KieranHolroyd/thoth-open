@@ -428,6 +428,38 @@
         }
       ],
       "callLogSamplingRate": 100
+    },
+    {
+      "name": "get_fini50_promo",
+      "description": "Return the current 50% off promo code. Use when the user asks about a 50% discount, half-price deal, or promo code for 50% off.",
+      "webhookUrl": "https://demo.thothsupport.dev/FINI50",
+      "enabled": false,
+      "parametersSchema": {
+        "parameters": []
+      },
+      "contextPolicy": {
+        "includeDiscordUserId": true,
+        "includeTicketId": true,
+        "includeChannelId": false,
+        "includeTicketSubject": false,
+        "includeTicketTags": false
+      },
+      "outboundHeaders": [],
+      "usageHint": "Call when the user asks for the 50% off promo code or similar half-price discount.",
+      "exampleResponse": {
+        "code": "FINI50",
+        "discountPercent": 50,
+        "durationMonths": 3,
+        "limitUsers": 25,
+        "message": "The discount code is FINI50 for 50% off for 3 months, for the first 25 users only."
+      },
+      "testFixtures": [
+        {
+          "name": "50% promo",
+          "arguments": {}
+        }
+      ],
+      "callLogSamplingRate": 100
     }
   ]
 }

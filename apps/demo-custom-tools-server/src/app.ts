@@ -11,11 +11,11 @@ import {
 import { filterOrders, findOrder } from "./data/orders.js";
 import { PROMOTIONS, STORE_INFO } from "./data/store.js";
 import { findSubscription } from "./data/subscriptions.js";
-import {
-  verifyThothWebhook,
-  type ThothWebhookPayload,
-} from "@thothsupport/webhook";
 import { handleToolRequest, listDemoTools } from "./handlers/tool-responses.js";
+import {
+  readVerifiedThothWebhook,
+  verifiedWebhookErrorResponse,
+} from "./handlers/thoth-webhook.js";
 
 export const app = new Hono();
 
@@ -34,18 +34,26 @@ app.get("/health", (c) =>
   }),
 );
 
-app.POST("/FINI50", (c) =>
-  c.text(
-    "The discount code is FINI50 for 50% off for 3 months, for the first 25 users only.",
-  ),
-);
+app.post("/FINI50", async (c) => {
+  const verified = await readVerifiedThothWebhook(c);
+  if (!verified.ok) {
+    return verifiedWebhookErrorResponse(c, verified);
+  }
+
+  return c.json(
+    handleToolRequest({
+      ...verified.payload,
+      tool: verified.payload.tool || "get_fini50_promo",
+    }),
+  );
+});
 
 app.get("/demo", (c) =>
   c.json({
     description: "Mock data API for Thoth custom tool demos.",
     tools: listDemoTools(),
     endpoints: [
-      "GET /FINI50",
+      "POST /FINI50",
       "GET /menu",
       "GET /menu/:id",
       "GET /categories",
@@ -167,32 +175,10 @@ app.get("/store", (c) =>
 );
 
 app.post("/", async (c) => {
-  const rawBody = await c.req.text();
-  const signature = c.req.header("X-Thoth-Signature");
-  const authorization = c.req.header("Authorization");
-  const secret = process.env.THOTH_SIGNING_SECRET;
-
-  if (!secret) {
-    return c.json({ error: "THOTH_SIGNING_SECRET is not configured" }, 500);
+  const verified = await readVerifiedThothWebhook(c);
+  if (!verified.ok) {
+    return verifiedWebhookErrorResponse(c, verified);
   }
 
-  if (
-    !verifyThothWebhook({
-      rawBody,
-      signatureHeader: signature,
-      authorizationHeader: authorization,
-      secret,
-    })
-  ) {
-    return c.json({ error: "Invalid signature" }, 401);
-  }
-
-  let payload: ThothWebhookPayload;
-  try {
-    payload = JSON.parse(rawBody) as ThothWebhookPayload;
-  } catch {
-    return c.json({ error: "Invalid JSON body" }, 400);
-  }
-
-  return c.json(handleToolRequest(payload));
+  return c.json(handleToolRequest(verified.payload));
 });
